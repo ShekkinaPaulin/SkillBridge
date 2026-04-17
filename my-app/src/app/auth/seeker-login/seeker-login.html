@@ -1,0 +1,44 @@
+<div class="container-fluid min-vh-100 d-flex align-items-center justify-content-center bg-light">
+  <div class="card shadow-sm p-4" style="width: 100%; max-width: 400px;">
+ 
+    <h4 class="text-center fw-semibold mb-1" style="color: #185FA5;">SkillBridge</h4>
+    <p class="text-center text-muted mb-3" style="font-size: 13px;">Connecting skills with opportunities</p>
+ 
+    <div class="d-flex mb-4">
+      <button class="btn w-50 me-1 inactive-tab" routerLink="/worker-login">Worker</button>
+      <button class="btn w-50 ms-1 active-seeker-tab">Seeker</button>
+    </div>
+ 
+    <h5 class="fw-semibold mb-1">Seeker login</h5>
+    <p class="text-muted mb-3" style="font-size: 13px;">Welcome back! Login to find skilled workers near you</p>
+ 
+    <div class="mb-3">
+      <label class="form-label">Email</label>
+      <input type="email" class="form-control" placeholder="seeker@example.com" [(ngModel)]="form.email" />
+    </div>
+ 
+    <div class="mb-3">
+      <label class="form-label">Password</label>
+      <input type="password" class="form-control" placeholder="••••••••" [(ngModel)]="form.password" />
+    </div>
+ 
+    <button class="btn w-100 text-white mb-2" style="background-color: #1a1f36;" (click)="onLogin()">
+      Login as seeker
+    </button>
+ 
+    <p *ngIf="error" class="text-danger text-center" style="font-size: 13px;">{{ error }}</p>
+ 
+    <p class="text-center mt-2" style="font-size: 13px;">
+      Don't have an account?
+      <a routerLink="/seeker-register" style="color: #1a1f36;">Register here</a>
+    </p>
+ 
+    <hr class="my-2" />
+ 
+    <p class="text-center" style="font-size: 13px;">
+      Are you a worker?
+      <a routerLink="/worker-login" style="color: #1D9E75;">Login as worker</a>
+    </p>
+ 
+  </div>
+</div>

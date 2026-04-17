@@ -1,0 +1,94 @@
+<div class="applicants-page">
+ 
+  <!-- Header -->
+  <div class="page-header">
+    <button class="back-btn" (click)="goBack()">
+      ← Back to Jobs
+    </button>
+    @if (job) {
+      <div class="job-info">
+        <span class="job-category">{{ job.skillCategory }}</span>
+        <h2 class="job-title">{{ job.title }}</h2>
+        <div class="job-meta">
+          📍 {{ job.location }} · 💰 {{ job.budget }} · 👤 {{ job.postedBy }}
+        </div>
+      </div>
+    }
+  </div>
+ 
+  <!-- Applicants count -->
+  <div class="applicants-header">
+    <h3 class="applicants-title">
+      {{ applicants.length }} Applicant(s)
+    </h3>
+    @if (job) {
+      <span class="job-status-badge"
+        [ngClass]="{
+          'badge-open': job.status === 'OPEN',
+          'badge-active': job.status === 'ACTIVE',
+          'badge-done': job.status === 'DONE'
+        }">
+        {{ job.status }}
+      </span>
+    }
+  </div>
+ 
+  <!-- Loading -->
+  @if (loading) {
+    <div class="loading">Loading applicants...</div>
+  }
+ 
+  <!-- Applicants list -->
+  @if (!loading) {
+    <div class="applicants-list">
+      @for (app of applicants; track app.id) {
+        <div class="applicant-card">
+          <div class="applicant-left">
+            <div class="applicant-avatar">
+              {{ app.workerName.charAt(0).toUpperCase() }}
+            </div>
+            <div class="applicant-details">
+              <div class="applicant-name">{{ app.workerName }}</div>
+              <div class="applicant-skill">{{ app.workerSkill }}</div>
+              <div class="applicant-phone">📞 {{ app.workerPhone }}</div>
+              <div class="applicant-date">
+                Applied {{ app.appliedAt | date:'dd MMM, hh:mm a' }}
+              </div>
+            </div>
+          </div>
+          <div class="applicant-right">
+            <span class="status-pill"
+              [ngClass]="{
+                'pill-pending': app.status === 'PENDING',
+                'pill-accepted': app.status === 'ACCEPTED',
+                'pill-rejected': app.status === 'REJECTED'
+              }">
+              {{ app.status }}
+            </span>
+            @if (app.status === 'PENDING') {
+              <div class="applicant-actions">
+                <button class="reject-btn"
+                  (click)="rejectApplicant(app.id)">
+                  Reject
+                </button>
+                <button class="accept-btn"
+                  (click)="acceptApplicant(app.id)">
+                  Accept
+                </button>
+              </div>
+            }
+          </div>
+        </div>
+      }
+ 
+      @if (applicants.length === 0) {
+        <div class="empty-state">
+          <div class="empty-icon">📭</div>
+          <div class="empty-text">No one has applied yet</div>
+          <div class="empty-sub">Share the job to get applicants!</div>
+        </div>
+      }
+    </div>
+  }
+ 
+</div>

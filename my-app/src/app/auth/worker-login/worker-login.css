@@ -1,0 +1,23 @@
+.active-worker-tab {
+  background-color: #7daee0;
+  color: #4b99e7;
+  border: 1px solid #7daee0
+
+5;
+  font-size: 14px;
+  font-weight: 500;
+}
+ 
+.inactive-tab {
+  background-color: #f0f0f0;
+  color: #888;
+  border: 1px solid #ddd;
+  font-size: 14px;
+}
+ 
+.form-control:focus {
+  border-color: #7daee0
+
+;
+  box-shadow: 0 0 0 0.2rem rgba(29, 158, 117, 0.25);
+}

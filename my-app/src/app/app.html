@@ -1,0 +1,52 @@
+<div class="app-shell" *ngIf="showSidebar; else noSidebar">
+
+  <aside class="sidebar" [class.collapsed]="isCollapsed">
+
+    <div class="sidebar-brand">
+      <i class="fa-solid fa-wrench brand-icon"></i>
+      <span class="brand-name" *ngIf="!isCollapsed">SkillBridge</span>
+    </div>
+
+    <button class="collapse-btn" (click)="isCollapsed = !isCollapsed">
+      <i class="fa-solid" [ngClass]="isCollapsed ? 'fa-chevron-right' : 'fa-chevron-left'"></i>
+    </button>
+
+    <nav class="sidebar-nav">
+      <a routerLink="/home" routerLinkActive="active" class="nav-item"
+         [title]="isCollapsed ? 'Home' : ''">
+        <i class="fa-solid fa-house nav-icon"></i>
+        <span class="nav-label" *ngIf="!isCollapsed">Home</span>
+      </a>
+      <a routerLink="/workers" routerLinkActive="active" class="nav-item"
+         [title]="isCollapsed ? 'Worker Registration' : ''">
+        <i class="fa-solid fa-hard-hat nav-icon"></i>
+        <span class="nav-label" *ngIf="!isCollapsed">Worker Registration</span>
+      </a>
+      <a routerLink="/jobs" routerLinkActive="active" class="nav-item"
+         [title]="isCollapsed ? 'Job Registration' : ''">
+        <i class="fa-solid fa-briefcase nav-icon"></i>
+        <span class="nav-label" *ngIf="!isCollapsed">Job Registration</span>
+      </a>
+      <a routerLink="/ratings" routerLinkActive="active" class="nav-item"
+         [title]="isCollapsed ? 'Ratings & Reviews' : ''">
+        <i class="fa-solid fa-star nav-icon"></i>
+        <span class="nav-label" *ngIf="!isCollapsed">Ratings & Reviews</span>
+      </a>
+      <a class="nav-item logout" (click)="logout()"
+         [title]="isCollapsed ? 'Logout' : ''">
+        <i class="fa-solid fa-right-from-bracket nav-icon"></i>
+        <span class="nav-label" *ngIf="!isCollapsed">Logout</span>
+      </a>
+    </nav>
+
+  </aside>
+
+  <main class="main-content" [class.expanded]="isCollapsed">
+    <router-outlet />
+  </main>
+
+</div>
+
+<ng-template #noSidebar>
+  <router-outlet />
+</ng-template>

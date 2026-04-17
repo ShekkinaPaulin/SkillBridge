@@ -1,0 +1,259 @@
+<div class="app">
+ 
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <div class="logo">SB</div>
+      <div>
+        <div class="app-name">SkillBridge</div>
+        <div class="app-sub">Connect skills with opportunities</div>
+      </div>
+    </div>
+    <button class="post-btn" (click)="openPostForm()" 
+  *ngIf="userRole === 'SEEKER'">
+  + Post a Job
+</button>
+  </div>
+ 
+  <!-- Stats -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">Total jobs</div>
+      <div class="stat-val">{{ stats.total }}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Open</div>
+      <div class="stat-val open">{{ stats.open }}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Active</div>
+      <div class="stat-val active">{{ stats.active }}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Completed</div>
+      <div class="stat-val done">{{ stats.done }}</div>
+    </div>
+  </div>
+ 
+  <!-- Post Job Form -->
+  @if (showPostForm) {
+    <div class="form-card">
+      <div class="form-header">
+        <h3>Post a new job</h3>
+        <button class="close-btn" (click)="closeAll()">✕</button>
+      </div>
+      @if (postError) {
+        <div class="error-msg">{{ postError }}</div>
+      }
+      <div class="form-grid">
+        <div class="field">
+          <label>Job title</label>
+          <input [(ngModel)]="postForm.title"
+            placeholder="e.g. Fix kitchen sink" />
+        </div>
+        <div class="field">
+          <label>Category</label>
+          <select [(ngModel)]="postForm.skillCategory">
+            <option value="">Select category</option>
+            @for (c of categories; track c) {
+              <option [value]="c">{{ c }}</option>
+            }
+          </select>
+        </div>
+        <div class="field">
+          <label>Location</label>
+          <input [(ngModel)]="postForm.location"
+            placeholder="e.g. Anna Nagar" />
+        </div>
+        <div class="field">
+          <label>Pincode</label>
+          <input [(ngModel)]="postForm.pincode"
+            placeholder="600001" maxlength="6" />
+        </div>
+        <div class="field">
+          <label>Budget</label>
+          <input [(ngModel)]="postForm.budget"
+            placeholder="e.g. ₹300-500" />
+        </div>
+        <div class="field">
+          <label>Your name</label>
+          <input [(ngModel)]="postForm.postedBy"
+            placeholder="Your name" />
+        </div>
+        <div class="field full">
+          <label>Your phone</label>
+          <input [(ngModel)]="postForm.phone"
+            placeholder="Your phone number" />
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="cancel-btn" (click)="closeAll()">Cancel</button>
+        <button class="submit-btn" (click)="submitJob()"
+          [disabled]="postLoading">
+          {{ postLoading ? 'Posting...' : 'Post Job' }}
+        </button>
+      </div>
+    </div>
+  }
+ 
+  <!-- Apply Form -->
+  @if (showApplyForm) {
+    <div class="form-card">
+      <div class="form-header">
+        <h3>Apply for this job</h3>
+        <button class="close-btn" (click)="closeAll()">✕</button>
+      </div>
+      @if (applyError) {
+        <div class="error-msg">{{ applyError }}</div>
+      }
+      <div class="form-grid">
+        <div class="field">
+          <label>Your name</label>
+          <input [(ngModel)]="applyForm.workerName"
+            placeholder="Your name" />
+        </div>
+        <div class="field">
+          <label>Your phone</label>
+          <input [(ngModel)]="applyForm.workerPhone"
+            placeholder="Your phone number" />
+        </div>
+        <div class="field full">
+          <label>Your skill</label>
+          <select [(ngModel)]="applyForm.workerSkill">
+            <option value="">Select your skill</option>
+            @for (c of categories; track c) {
+              <option [value]="c">{{ c }}</option>
+            }
+          </select>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="cancel-btn" (click)="closeAll()">Cancel</button>
+        <button class="submit-btn" (click)="submitApply()"
+          [disabled]="applyLoading">
+          {{ applyLoading ? 'Submitting...' : 'Submit Application' }}
+        </button>
+      </div>
+    </div>
+  }
+ 
+  <!-- Applicants Panel -->
+  @if (showApplicants) {
+    <div class="form-card">
+      <div class="form-header">
+        <h3>Applicants ({{ applicants.length }})</h3>
+        <button class="close-btn" (click)="closeAll()">✕</button>
+      </div>
+      <div class="applicants-list">
+        @for (app of applicants; track app.id) {
+          <div class="applicant-row">
+            <div class="applicant-avatar">
+              {{ app.workerName.charAt(0) }}
+            </div>
+            <div class="applicant-info">
+              <div class="applicant-name">{{ app.workerName }}</div>
+              <div class="applicant-meta">
+                {{ app.workerSkill }} · {{ app.workerPhone }}
+              </div>
+            </div>
+            <span class="status-pill"
+              [ngClass]="{
+                'pill-pending': app.status === 'PENDING',
+                'pill-accepted': app.status === 'ACCEPTED',
+                'pill-rejected': app.status === 'REJECTED'
+              }">
+              {{ app.status }}
+            </span>
+            @if (app.status === 'PENDING') {
+              <div class="applicant-actions">
+                <button class="reject-btn"
+                  (click)="rejectApplicant(app.id)">
+                  Reject
+                </button>
+                <button class="accept-btn"
+                  (click)="acceptApplicant(app.id)">
+                  Accept
+                </button>
+              </div>
+            }
+          </div>
+        }
+        @if (applicants.length === 0) {
+          <div class="empty">No applicants yet.</div>
+        }
+      </div>
+    </div>
+  }
+ 
+  <!-- Filter -->
+  <div class="filter-bar">
+    <span class="filter-label">My posted jobs</span>
+    <div class="filter-btns">
+      @for (f of filters; track f) {
+        <button class="filter-btn"
+          [class.active]="activeFilter === f"
+          (click)="applyFilter(f)">
+          {{ f }}
+        </button>
+      }
+    </div>
+  </div>
+ 
+  <!-- Job Cards -->
+  <div class="jobs-grid">
+    @for (job of filteredJobs; track job.id) {
+      <div class="job-card">
+        <div class="card-top">
+          <span class="category-badge">{{ job.skillCategory }}</span>
+          <span class="status-badge"
+            [ngClass]="{
+              'badge-open': job.status === 'OPEN',
+              'badge-active': job.status === 'ACTIVE',
+              'badge-done': job.status === 'DONE'
+            }">
+            {{ job.status }}
+          </span>
+        </div>
+        <div class="job-title">{{ job.title }}</div>
+        <div class="job-meta">
+          <span>📍 {{ job.location }}</span>
+          <span>📌 {{ job.pincode }}</span>
+        </div>
+        <div class="job-meta">
+          <span>💰 {{ job.budget }}</span>
+          <span>👤 {{ job.postedBy }}</span>
+        </div>
+        <div class="card-footer">
+          <span class="job-date">{{ job.createdAt | date:'dd MMM' }}</span>
+          <div class="card-actions">
+            @if (job.status === 'OPEN') {
+  <button class="action-btn apply-btn"
+    (click)="openApplyForm(job.id)"
+    *ngIf="userRole === 'WORKER'">
+    Apply
+  </button>
+  <button class="action-btn view-btn"
+    (click)="openApplicants(job.id)"
+    *ngIf="userRole === 'SEEKER'">
+    Applicants
+  </button>
+}
+            @if (job.status === 'ACTIVE') {
+              <button class="action-btn done-btn"
+                (click)="updateStatus(job.id, 'DONE')">
+                Mark Done
+              </button>
+            }
+            @if (job.status === 'DONE') {
+              <span class="completed-tag">✓ Completed</span>
+            }
+          </div>
+        </div>
+      </div>
+    }
+    @if (filteredJobs.length === 0) {
+      <div class="empty-state">No jobs found.</div>
+    }
+  </div>
+ 
+</div>

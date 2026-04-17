@@ -1,0 +1,19 @@
+.active-seeker-tab {
+  background-color: #E6F1FB;
+  color: #1a1f36;
+  border: 1px solid #1a1f36;
+  font-size: 14px;
+  font-weight: 500;
+}
+ 
+.inactive-tab {
+  background-color: #f0f0f0;
+  color: #888;
+  border: 1px solid #ddd;
+  font-size: 14px;
+}
+ 
+.form-control:focus {
+  border-color: #1a1f36;
+  box-shadow: 0 0 0 0.2rem rgba(24, 95, 165, 0.25);
+}
